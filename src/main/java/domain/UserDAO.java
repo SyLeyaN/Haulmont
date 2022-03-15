@@ -1,11 +1,14 @@
 package domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 
-public class UserDAO {
+public class UserDAO implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,19 +23,31 @@ public class UserDAO {
 
     private String email;
 
+    private String password;
+
     private String passport;
+
+    private Boolean active;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
+    @OneToMany
+    private Set<Offer> offers;
 
     public UserDAO(){
 
     }
 
-    public UserDAO(String firstName, String midName, String lastName, String telephone, String email, String passport) {
+    public UserDAO(String firstName, String midName, String lastName, String telephone, String email, String passport, String password) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.telephone = telephone;
         this.email = email;
         this.passport = passport;
+        this.password = password;
     }
 
     public Long getId() {
@@ -41,6 +56,14 @@ public class UserDAO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {
@@ -89,5 +112,56 @@ public class UserDAO {
 
     public void setPassport(String passport) {
         this.passport = passport;
+    }
+
+    public Set<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public boolean isAdmin(){
+        return roles.contains(Role.ADMIN);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return passport;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
     }
 }
