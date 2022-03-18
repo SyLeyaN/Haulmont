@@ -1,40 +1,49 @@
 package domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name="Offer")
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="name")
     private String name;
 
+    @Column(name="userName")
     private String userName;
 
+    @Column(name="creditName")
     private String creditName;
 
-    private Date paymentDate;
+    @Column(name="paymentData")
+    private Date paymentData;
 
+    @Column(name="paymentAll")
     private double paymentAll;
 
+    @Column(name="paymentMonth")
     private double paymentMonth;
 
+    @Column(name="paymentBody")
     private double paymentBody;
 
+    @Column(name="paymentPercent")
     private double paymentPercent;
 
     public Offer(){
 
     }
 
-    public Offer(String name, String userName, String creditName, Date paymentDate, double paymentAll, double paymentMonth, double paymentBody, double paymentPercent) {
+    public Offer(String name, String userName, String creditName, Date paymentData, double paymentAll, double paymentMonth, double paymentBody, double paymentPercent) {
         this.name = name;
         this.userName = userName;
         this.creditName = creditName;
-        this.paymentDate = paymentDate;
+        this.paymentData = paymentData;
         this.paymentAll = paymentAll;
         this.paymentMonth = paymentMonth;
         this.paymentBody = paymentBody;
@@ -73,12 +82,12 @@ public class Offer {
         this.creditName = creditName;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getPaymentData() {
+        return paymentData;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPaymentData(Date paymentDate) {
+        this.paymentData = paymentData;
     }
 
     public double getPaymentAll() {

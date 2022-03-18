@@ -1,20 +1,26 @@
 package domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name="Bank")
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="name")
     private String name;
 
+    @Column(name="users")
+    @OneToMany // Но это не точно
     private Set<UserDAO> users = new HashSet<>();
 
+    @Column(name="credits")// Посмотреть сет из роллс в пользователях
+    @OneToMany
     private Set<Credit> credits = new HashSet<>();
 
     public Bank(){

@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-
+@Entity
+@Table(name="UserDAO")
 public class UserDAO implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
