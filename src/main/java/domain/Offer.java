@@ -35,11 +35,16 @@ public class Offer {
     @Column(name="paymentPercent")
     private double paymentPercent;
 
+    @Column(name="bankName")
+    private String bankName;
+
     public Offer(){
 
     }
 
-    public Offer(String name, String userName, String creditName, Date paymentData, double paymentAll, double paymentMonth, double paymentBody, double paymentPercent) {
+    public Offer(String name, String userName, String creditName, Date paymentData,
+                 double paymentAll, double paymentMonth, double paymentBody,
+                 double paymentPercent, String bankName) {
         this.name = name;
         this.userName = userName;
         this.creditName = creditName;
@@ -48,6 +53,7 @@ public class Offer {
         this.paymentMonth = paymentMonth;
         this.paymentBody = paymentBody;
         this.paymentPercent = paymentPercent;
+        this.bankName = bankName;
     }
 
     public Long getId() {
@@ -120,5 +126,13 @@ public class Offer {
 
     public void setPaymentPercent(double paymentPercent) {
         this.paymentPercent = paymentPercent;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

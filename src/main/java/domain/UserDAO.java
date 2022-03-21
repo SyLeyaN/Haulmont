@@ -1,15 +1,12 @@
 package domain;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="UserDAO")
-public class UserDAO implements UserDetails {
+public class UserDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,31 +21,33 @@ public class UserDAO implements UserDetails {
 
     private String email;
 
-    private String password;
-
     private String passport;
 
     private Boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
-
     @OneToMany
     private Set<Offer> offers;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_bank",
+            joinColumns = { @JoinColumn(name ="user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "bank_id")}
+    )
+    private Set<Bank> banks = new HashSet<>();
+
 
     public UserDAO(){
 
     }
 
-    public UserDAO(String firstName, String midName, String lastName, String telephone, String email, String passport, String password) {
+    public UserDAO(String firstName, String midName, String lastName, String telephone, String email, String passport) {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.telephone = telephone;
         this.email = email;
         this.passport = passport;
-        this.password = password;
     }
 
     public Long getId() {
@@ -57,14 +56,6 @@ public class UserDAO implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public String getFirstName() {
@@ -127,42 +118,19 @@ public class UserDAO implements UserDetails {
         return active;
     }
 
-    public boolean isAdmin(){
-        return roles.contains(Role.ADMIN);
+    public Boolean getActive() {
+        return active;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public Set<Bank> getBanks() {
+        return banks;
     }
 
-    @Override
-    public String getUsername() {
-        return passport;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive();
+    public void setBanks(Set<Bank> banks) {
+        this.banks = banks;
     }
 }
