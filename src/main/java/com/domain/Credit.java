@@ -51,4 +51,12 @@ public class Credit {
     public void setRate(double rate) {
         this.rate = rate;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

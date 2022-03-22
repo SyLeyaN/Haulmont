@@ -18,8 +18,11 @@ public class UserDAOController {
 
     @GetMapping("/")
     public String main(Model model){
-        model.addAttribute("userSize",userDAORepos.count());
-        model.addAttribute("usrs", userDAORepos.findAll());
+        long count = userDAORepos.count();
+        model.addAttribute("userSize",count);
+
+        Iterable<UserDAO> userDAOS = userDAORepos.findAll();
+        model.addAttribute("usrs", userDAOS);
         return "users";
     }
 
@@ -56,9 +59,9 @@ public class UserDAOController {
                              Model model){
         UserDAO userDAO = userDAORepos.findByPassport(passport);
         userDAORepos.delete(userDAO);
-//        model.addAttribute("userSize", userDAORepos.count());
-//        model.addAttribute("usrs", userDAORepos.findAll());
-//
+        model.addAttribute("userSize", userDAORepos.count());
+        model.addAttribute("usrs", userDAORepos.findAll());
+
         return "redirect:/";
     }
 
@@ -70,6 +73,7 @@ public class UserDAOController {
                              @RequestParam String email,
                              @RequestParam String passport, Model model){
         UserDAO userDAO = userDAORepos.findByPassport(passport);
+        model.addAttribute("userSize",userDAORepos.count());
         if (fname == "" || sname == "" || lname == "") {
             model.addAttribute("messageError", "Please, enter full name");
             return "users";
@@ -82,6 +86,7 @@ public class UserDAOController {
 
         if (telephone == ""){
             model.addAttribute("messageError","Please, enter your telephone");
+            return "users";
         }
 
         if (userDAO!=null){
@@ -90,6 +95,6 @@ public class UserDAOController {
         }
 
         userDAORepos.save(new UserDAO(fname,sname,lname,telephone,email,passport));
-        return "redirect:/users";
+        return "redirect:/";
     }
 }
