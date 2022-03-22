@@ -1,6 +1,6 @@
-package repos;
+package com.repos;
 
-import domain.UserDAO;
+import com.domain.UserDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDAORepos extends JpaRepository<UserDAO,Long> {

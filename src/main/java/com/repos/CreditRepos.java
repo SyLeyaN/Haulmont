@@ -1,6 +1,6 @@
-package repos;
+package com.repos;
 
-import domain.Credit;
+import com.domain.Credit;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CreditRepos extends JpaRepository<Credit, Long> {

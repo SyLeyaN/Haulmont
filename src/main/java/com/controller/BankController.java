@@ -1,12 +1,12 @@
-/*package controller;
+/*package com.controller;
 
-import domain.Bank;
+import com.domain.Bank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import repos.BankRepos;
+import com.repos.BankRepos;
 
 @Controller
 public class BankController {

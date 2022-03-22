@@ -1,4 +1,4 @@
-package domain;
+package com.domain;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,23 +9,32 @@ import java.util.Set;
 public class UserDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
 
+    @Column(name="firstName")
     private String firstName;
 
+    @Column(name="midName")
     private String midName;
 
+    @Column(name="lastName")
     private String lastName;
 
+    @Column(name="telephone")
     private String telephone;
 
+    @Column(name="email")
     private String email;
 
+    @Column(name="passport")
     private String passport;
 
+    @Column(name="active")
     private Boolean active;
 
     @OneToMany
+    @Column(name="offers")//Изменить
     private Set<Offer> offers;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -48,6 +57,14 @@ public class UserDAO{
         this.telephone = telephone;
         this.email = email;
         this.passport = passport;
+    }
+
+    public void update(String firstName, String midName, String lastName, String telephone, String email){
+        this.firstName = firstName;
+        this.midName = midName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+        this.email = email;
     }
 
     public Long getId() {

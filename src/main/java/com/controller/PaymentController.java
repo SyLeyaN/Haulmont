@@ -1,4 +1,4 @@
-/*package controller;
+/*package com.controller;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;

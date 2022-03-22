@@ -1,3 +1,5 @@
+package com;
+
 public class PaymentMechanism {
     public static void calculation(double rate, double limit, double sum, double paymentMonth,
                             double paymentBody, double paymentPercent, double paymentAll){
