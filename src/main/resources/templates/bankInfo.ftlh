@@ -2,13 +2,25 @@
 
 <@c.page>
 
-<#list usrs as usr>
-    <div class="align-middle text-center" >${usr.firstName} ${usr.midName} ${usr.lastName}</div>
-</#list>
+    <h4><font color="#dc143c">${messageError!""}</font></h4>
+
+    <br><h5>Update bank's information</h5>
+
+    <div class="container-fluid">
+    <div class="form-group col-md-6">
+        <form action="${bank.id}/bankProf" method="post">
+            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Name: </label>
+            <div class="col-sm-5">
+                <input type="text" name="bName" value="${bank.name}"></label>
+            </div>
+            <button type="submit" class="btn btn-primary ml-2 mt-2">Save</button>
+        </form>
+    </div>
+
 
     <br><h5>Add new credit</h5>
     <div class="form-row align-items-center mt-3">
-        <form action="${bank.id}/addCredit" method="post">
+        <form action="/banks/${bank.id}/addCredit" method="post">
             <div class="col-auto my-1">
                 <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Name: </label>
                 <div class="col-sm-5">
@@ -37,8 +49,6 @@
                 <th class="align-middle text-center" >Limit (month)</th>
                 <th class="align-middle text-center" >Rate</th>
                 <th class="align-middle text-center" >Offer</th>
-
-                <#--                <th class="align-middle text-center" >Full info</th>-->
             </tr>
             </thead>
             <tbody>
@@ -83,6 +93,12 @@
                     <td class="align-middle text-center" >${client.passport}</td>
                     <td class="align-middle text-center" >${client.telephone}</td>
                     <td class="align-middle text-center" >${client.email}</td>
+                    <td class="align-middle text-center" >
+                        <form action="${bank.id}/deleteClient" method="post">
+                            <input type="hidden" name="passport" value="${client.passport}"/>
+                            <button type="submit" class="btn btn-outline-danger ml-2 mt-2" name="delete">Delete</button>
+                        </form>
+                    </td>
 
                     </td>
                 </tr>

@@ -2,6 +2,7 @@ package com.controller;
 
 import com.domain.Bank;
 import com.domain.Credit;
+import com.domain.Offer;
 import com.domain.UserDAO;
 import com.repos.BankRepos;
 import com.repos.CreditRepos;
@@ -48,6 +49,8 @@ public class BankController {
     public String addBank(@RequestParam String name, Model model){
         Bank bank = bankRepos.findByName(name);
         model.addAttribute("bankSize",bankRepos.count());
+        model.addAttribute("bank", bankRepos.findAll());
+
 
         if (name == ""){
             model.addAttribute("messageError","Please, enter bank's name");
@@ -86,6 +89,52 @@ public class BankController {
         creditRepos.delete(credit);
         model.addAttribute("creditSize", creditRepos.count());
         model.addAttribute("credits", creditRepos.findAll());
+        int clientSize = bank.getUsers().size();
+        model.addAttribute("clientSize", clientSize);
+        return "redirect:/banks/{bank}";
+    }
+
+    @PostMapping("{bank}/deleteClient")
+    public String deleteClient(@RequestParam String passport, @PathVariable Bank bank,
+                               Model model){
+        UserDAO userDAO = userDAORepos.findByPassport(passport);
+        bank.getUsers().remove(userDAO);
+        for (Offer of : userDAO.getOffers()){
+            if (of.getBankName()==bank.getName()){
+                userDAO.getOffers().remove(of);
+            }
+        }
+        userDAO.getBanks().remove(bank);
+        userDAORepos.save(userDAO);
+        Bank bank1 = bank;
+        bankRepos.save(bank);
+
+        return "redirect:/banks/{bank}";
+    }
+
+    @PostMapping("{bank}/bankProf")
+    public String bankProf(@PathVariable Bank bank, @RequestParam String bName, Model model){
+        Bank bank1 = bankRepos.findByName(bName);
+
+        model.addAttribute("credits", creditRepos.findAll());
+        int clientSize = bank.getUsers().size();
+        model.addAttribute("clientSize", clientSize);
+
+        if(bank1!=null){
+            model.addAttribute("messageError","Bank with this name already exists. Try again");
+            return "bankInfo";
+        }
+
+        if(bName == ""){
+            model.addAttribute("messageError","Enter bank's name, please");
+            return "bankInfo";
+        }
+
+        bank1=bank;
+        bank1.setName(bName);
+
+        bankRepos.save(bank1);
+
         return "redirect:/banks/{bank}";
     }
 
@@ -113,6 +162,11 @@ public class BankController {
 
         if (credit!=null){
             model.addAttribute("messageError", "Credit with this name already exists. Try again");
+            return "bankInfo";
+        }
+
+        if (rate<1||rate>100){
+            model.addAttribute("messageError", "Rate must be from 1 to 100");
             return "bankInfo";
         }
 

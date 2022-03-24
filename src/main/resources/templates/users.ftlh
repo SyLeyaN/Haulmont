@@ -72,7 +72,7 @@
                     <td class="align-middle text-center" >${usr.passport}</td>
                     <td class="align-middle text-center" >${usr.telephone}</td>
                     <td class="align-middle text-center" >${usr.email}</td>
-                    <td class="align-middle text-center" ><a href="/${usr.id}">Banks and offers</a></td>
+                    <td class="align-middle text-center" ><a href="users/${usr.id}">Banks and offers</a></td>
                     <td class="align-middle text-center" >
                                 <form action="/delete" method="post">
                                     <input type="hidden" name="passport" value="${usr.passport}"/>

@@ -1,7 +1,8 @@
 package com.domain;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="Offer")
@@ -14,14 +15,11 @@ public class Offer {
     @Column(name="name")
     private String name;
 
-    @Column(name="userName")
-    private String userName;
+    @Column(name="userPassport")
+    private String userPassport;
 
     @Column(name="creditName")
     private String creditName;
-
-    @Column(name="paymentData")
-    private Date paymentData;
 
     @Column(name="paymentAll")
     private double paymentAll;
@@ -29,31 +27,25 @@ public class Offer {
     @Column(name="paymentMonth")
     private double paymentMonth;
 
-    @Column(name="paymentBody")
-    private double paymentBody;
-
-    @Column(name="paymentPercent")
-    private double paymentPercent;
-
     @Column(name="bankName")
     private String bankName;
+
+    @Column(name="payments")
+    @OneToMany
+    private List<Payment> payments;
 
     public Offer(){
 
     }
 
-    public Offer(String name, String userName, String creditName, Date paymentData,
-                 double paymentAll, double paymentMonth, double paymentBody,
-                 double paymentPercent, String bankName) {
+    public Offer(String name, String userPassport, String creditName,
+                 double paymentAll, String bankName) {
         this.name = name;
-        this.userName = userName;
+        this.userPassport = userPassport;
         this.creditName = creditName;
-        this.paymentData = paymentData;
         this.paymentAll = paymentAll;
-        this.paymentMonth = paymentMonth;
-        this.paymentBody = paymentBody;
-        this.paymentPercent = paymentPercent;
         this.bankName = bankName;
+        payments = new ArrayList<>();
     }
 
     public Long getId() {
@@ -72,12 +64,12 @@ public class Offer {
         this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserPassport() {
+        return userPassport;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserPassport(String userPassport) {
+        this.userPassport = userPassport;
     }
 
     public String getCreditName() {
@@ -88,14 +80,6 @@ public class Offer {
         this.creditName = creditName;
     }
 
-    public Date getPaymentData() {
-        return paymentData;
-    }
-
-    public void setPaymentData(Date paymentDate) {
-        this.paymentData = paymentData;
-    }
-
     public double getPaymentAll() {
         return paymentAll;
     }
@@ -104,35 +88,27 @@ public class Offer {
         this.paymentAll = paymentAll;
     }
 
-    public double getPaymentMonth() {
-        return paymentMonth;
-    }
-
-    public void setPaymentMonth(double paymentMonth) {
-        this.paymentMonth = paymentMonth;
-    }
-
-    public double getPaymentBody() {
-        return paymentBody;
-    }
-
-    public void setPaymentBody(double paymentBody) {
-        this.paymentBody = paymentBody;
-    }
-
-    public double getPaymentPercent() {
-        return paymentPercent;
-    }
-
-    public void setPaymentPercent(double paymentPercent) {
-        this.paymentPercent = paymentPercent;
-    }
-
     public String getBankName() {
         return bankName;
     }
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public double getPaymentMonth() {
+        return paymentMonth;
+    }
+
+    public void setPaymentMonth(double paymentMonth) {
+        this.paymentMonth = paymentMonth;
     }
 }

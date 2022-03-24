@@ -1,6 +1,12 @@
 package com.controller;
 
+import com.domain.Bank;
+import com.domain.Credit;
+import com.domain.Offer;
 import com.domain.UserDAO;
+import com.repos.BankRepos;
+import com.repos.CreditRepos;
+import com.repos.OfferRepos;
 import com.repos.UserDAORepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,11 +16,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Controller
 public class UserDAOController {
     @Autowired
     UserDAORepos userDAORepos;
+
+    @Autowired
+    CreditRepos creditRepos;
+
+    @Autowired
+    BankRepos bankRepos;
+
+    @Autowired
+    OfferRepos offerRepos;
 
     @GetMapping("/")
     public String main(Model model){
@@ -26,38 +44,85 @@ public class UserDAOController {
         return "users";
     }
 
-    @GetMapping("/{user}")
-    public String offers(@PathVariable UserDAO user, Model model){
-        model.addAttribute("user", user);
-        return "user";
+    @GetMapping("users/{user}")
+    public String userInfo(@PathVariable UserDAO user, Model model){
+        model.addAttribute("usr", user);
+        model.addAttribute("offers",user.getOffers());
+        model.addAttribute("offerSize",user.getOffers().size());
+
+        List<Credit> credits = new ArrayList<>();
+        Credit credit ;
+
+        for (Offer offer : user.getOffers()){
+            credit = creditRepos.findByName(offer.getCreditName());
+            credits.add(credit);
+        }
+
+        model.addAttribute("credits",credits);
+
+        return "userInfo";
     }
 
-    @PostMapping("/{user}")
+    @PostMapping("users/{user}/updateUser")
     public String updateUser(@RequestParam String fname, @RequestParam String mname,
                              @RequestParam String lname, @RequestParam String telephone,
-                             @RequestParam String email, @PathVariable UserDAO user,
-                             Model model){
-        if (fname=="" || lname=="" || mname!=""){
+                             @RequestParam String email, @PathVariable UserDAO user, Model model){
+        model.addAttribute("usr", user);
+        model.addAttribute("offers",user.getOffers());
+        model.addAttribute("offerSize",user.getOffers().size());
+
+        List<Credit> credits = new ArrayList<>();
+        Credit credit ;
+
+        for (Offer offer : user.getOffers()){
+            credit = creditRepos.findByName(offer.getCreditName());
+            credits.add(credit);
+        }
+
+        model.addAttribute("credits",credits);
+
+
+        if (fname=="" || lname=="" || mname==""){
             model.addAttribute("messageError","Name must be filled");
-            return "user";
+            return "userInfo";
         }
 
         if (telephone == ""){
             model.addAttribute("messageError","Please, enter your telephone");
-            return "user";
+            return "userInfo";
+        }
+
+        if (email == ""){
+            model.addAttribute("messageError","Please, enter your email");
+            return "userInfo";
         }
 
         UserDAO userDAO = userDAORepos.findByPassport(user.getPassport());
         userDAO.update(fname,mname,lname,telephone,email);
         userDAORepos.save(userDAO);
 
-        return "users";
+        return "redirect:/users/{user}";
     }
 
     @PostMapping("delete")
     public String deleteUser(@RequestParam String passport,
                              Model model){
         UserDAO userDAO = userDAORepos.findByPassport(passport);
+
+        for (Bank bank : bankRepos.findAll()){
+            for (UserDAO userDAO1 : bank.getUsers()){
+                if (userDAO1.getPassport() == passport){
+                    bank.getUsers().remove(userDAO1);
+                }
+            }
+        }
+
+        for (Offer offer : offerRepos.findAll()){
+            if (offer.getUserPassport() == passport){
+                offerRepos.delete(offer);
+            }
+        }
+
         userDAORepos.delete(userDAO);
         model.addAttribute("userSize", userDAORepos.count());
         model.addAttribute("usrs", userDAORepos.findAll());
@@ -86,6 +151,11 @@ public class UserDAOController {
 
         if (telephone == ""){
             model.addAttribute("messageError","Please, enter your telephone");
+            return "users";
+        }
+
+        if (email == ""){
+            model.addAttribute("messageError","Please, enter your email");
             return "users";
         }
 
