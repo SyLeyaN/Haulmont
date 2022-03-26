@@ -1,4 +1,4 @@
-package com.console;
+package com.logic;
 
 public class PaymentMechanism {
     public static void calculation(double rate, double limit, double sum, double paymentMonth,

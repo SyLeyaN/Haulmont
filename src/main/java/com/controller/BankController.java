@@ -38,9 +38,17 @@ public class BankController {
     public String deleteBank(@RequestParam String name,
                              Model model){
         Bank bank = bankRepos.findByName(name);
+
+        for(UserDAO userDAO : userDAORepos.findAll())
+            for(Bank bank1 : userDAO.getBanks()){
+                if (bank.getName().equals(bank1.getName())){
+                    userDAO.getBanks().remove(bank1);
+                }
+            }
+
         bankRepos.delete(bank);
         model.addAttribute("bankSize", bankRepos.count());
-        model.addAttribute("bank", bankRepos.findAll());
+        model.addAttribute("banks", bankRepos.findAll());
 
         return "redirect:/banks";
     }
@@ -49,7 +57,7 @@ public class BankController {
     public String addBank(@RequestParam String name, Model model){
         Bank bank = bankRepos.findByName(name);
         model.addAttribute("bankSize",bankRepos.count());
-        model.addAttribute("bank", bankRepos.findAll());
+        model.addAttribute("banks", bankRepos.findAll());
 
 
         if (name == ""){
@@ -85,8 +93,18 @@ public class BankController {
                                @PathVariable Bank bank,
                                Model model){
         Credit credit = creditRepos.findByName(name);
+
+        for(UserDAO userDAO : userDAORepos.findAll()){
+            for (Offer offer : userDAO.getOffers()){
+                if (offer.getCreditName().equals(credit.getName())){
+                    userDAO.getOffers().remove(offer);
+                }
+            }
+        }
+
         bank.getCredits().remove(credit);
         creditRepos.delete(credit);
+
         model.addAttribute("creditSize", creditRepos.count());
         model.addAttribute("credits", creditRepos.findAll());
         int clientSize = bank.getUsers().size();
@@ -99,6 +117,7 @@ public class BankController {
                                Model model){
         UserDAO userDAO = userDAORepos.findByPassport(passport);
         bank.getUsers().remove(userDAO);
+
         for (Offer of : userDAO.getOffers()){
             if (of.getBankName()==bank.getName()){
                 userDAO.getOffers().remove(of);
@@ -146,6 +165,14 @@ public class BankController {
         int clientSize = bank.getUsers().size();
         model.addAttribute("clientSize", clientSize);
 
+        Iterable<Bank> banks = bankRepos.findAll();
+        model.addAttribute("banks", banks);
+
+        model.addAttribute("credits",bank.getCredits());
+        model.addAttribute("clients",bank.getUsers());
+        model.addAttribute("usrs", userDAORepos.findAll());
+
+
         if (name == ""){
             model.addAttribute("messageError","Please, enter credit's name");
             return "bankInfo";
@@ -167,6 +194,11 @@ public class BankController {
 
         if (rate<1||rate>100){
             model.addAttribute("messageError", "Rate must be from 1 to 100");
+            return "bankInfo";
+        }
+
+        if (limit>500||limit<=0){
+            model.addAttribute("messageError", "Limit must be less 500 and more 0");
             return "bankInfo";
         }
 

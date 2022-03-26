@@ -46,6 +46,7 @@ public class UserDAOController {
 
     @GetMapping("users/{user}")
     public String userInfo(@PathVariable UserDAO user, Model model){
+
         model.addAttribute("usr", user);
         model.addAttribute("offers",user.getOffers());
         model.addAttribute("offerSize",user.getOffers().size());
@@ -97,6 +98,16 @@ public class UserDAOController {
             return "userInfo";
         }
 
+        if(!email.matches("[A-Za-z].*?@gmail\\.com")){
+            model.addAttribute("messageError", "Your email must be in format @gmail.com");
+            return "userInfo";
+        }
+
+        if(!telephone.matches("(8\\d{3})(\\d{3})(\\d{2})(\\d{2})")){
+            model.addAttribute("messageError", "Your telephone must be in format 8-###-###-##-##");
+            return "userInfo";
+        }
+
         UserDAO userDAO = userDAORepos.findByPassport(user.getPassport());
         userDAO.update(fname,mname,lname,telephone,email);
         userDAORepos.save(userDAO);
@@ -130,16 +141,20 @@ public class UserDAOController {
         return "redirect:/";
     }
 
-    @PostMapping
-    public String addUserDAO(@RequestParam String fname,
-                             @RequestParam String sname,
-                             @RequestParam String lname,
+    @PostMapping("/addUserDAO")
+    public String addUserDAO(@RequestParam(required=false) String firstName,
+                             @RequestParam String midName,
+                             @RequestParam String lastName,
                              @RequestParam String telephone,
                              @RequestParam String email,
                              @RequestParam String passport, Model model){
         UserDAO userDAO = userDAORepos.findByPassport(passport);
         model.addAttribute("userSize",userDAORepos.count());
-        if (fname == "" || sname == "" || lname == "") {
+
+        Iterable<UserDAO> userDAOS = userDAORepos.findAll();
+        model.addAttribute("usrs", userDAOS);
+
+        if (firstName == "" || midName == "" || lastName == "") {
             model.addAttribute("messageError", "Please, enter full name");
             return "users";
         }
@@ -164,7 +179,23 @@ public class UserDAOController {
             return "users";
         }
 
-        userDAORepos.save(new UserDAO(fname,sname,lname,telephone,email,passport));
+        if(!email.matches("[A-Za-z].*?@gmail\\.com")){
+            model.addAttribute("messageError", "Your email must be in format @gmail.com");
+            return "users";
+        }
+
+        if(!telephone.matches("(8\\d{3})(\\d{3})(\\d{2})(\\d{2})")){
+            model.addAttribute("messageError", "Your telephone must be in format 8-###-###-##-##");
+            return "users";
+        }
+
+        if(!passport.matches("(\\d{2})(\\d{2})(\\d{3})(\\d{3})")){
+            model.addAttribute("messageError", "Your passport must be in format ##-##-###-###");
+            return "users";
+        }
+
+
+        userDAORepos.save(new UserDAO(firstName,midName,lastName,telephone,email,passport));
         return "redirect:/";
     }
 }

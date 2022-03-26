@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.console.PaymentMechanism;
+import com.logic.PaymentMechanism;
 import com.domain.*;
 import com.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,12 @@ public class PaymentController {
 
     @GetMapping
     public String main(@PathVariable Bank bank, @PathVariable Credit credit, Model model){
+
+        Offer offer = offerRepos.findByName(credit.getName()+bank.getName());
+        if (offer!=null){
+            offerRepos.delete(offer);
+        }
+
         model.addAttribute("usrs", userDAORepos.findAll());
         model.addAttribute("credit",credit);
         model.addAttribute("bank",bank);
@@ -86,6 +92,7 @@ public class PaymentController {
     public String saveOffer(@PathVariable Bank bank, @RequestParam String creditName,@PathVariable Credit credit,
                             @RequestParam String passport,
                             Model model){
+        Iterable<Offer> offers  = offerRepos.findAll();
         Offer offer = offerRepos.findByName(creditName+bank.getName());
 
         offer.setName(passport+" "+creditName);
@@ -126,13 +133,15 @@ public class PaymentController {
             return "offerInfo";
         }
 
+        if (creditLimit>500|| creditLimit<0 || creditRate<0||creditRate>100){
+            model.addAttribute("messageError","Incorrect values");
+            return "offerInfo";
+        }
+
         if (credit2!=null&&credit2.getName()!=credit1.getName()){
             model.addAttribute("messageError", "Credit with this name already exists. Try again");
             return "offerInfo";
         }
-
-        // Проверка лимита и кредита на - значение
-
 
 
         credit1.setName(creditName);

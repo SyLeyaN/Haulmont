@@ -4,53 +4,53 @@
     <h4><font color="#dc143c">${messageError!""}</font></h4>
     <br><h5>Add new user</h5>
 <div class="form-row align-items-center mt-3">
-<form method="post">
-<#--    <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> First name: </label>
-            <div class="col-sm-5">
-            <input type="text" name="fname" class="form-control"/>
-            </div>
+<form action="addUserDAO" method="post">
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect" > First name: </label>
+        <div class="col-sm-5">
+            <input type="text" name="firstName" class="form-control" placeholder="Ivan"/>
         </div>
+    </div>
 
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Middle name: </label>
-            <div class="col-sm-5">
-            <input type="text" name="sname" class="form-control"/>
-            </div>
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect" > Middle name: </label>
+        <div class="col-sm-5">
+            <input type="text" name="midName" class="form-control" placeholder="Ivanovich" />
         </div>
+    </div>
 
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Last name: </label>
-            <div class="col-sm-5">
-            <input type="text" name="lname" class="form-control"/>
-            </div>
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect" > Last name: </label>
+        <div class="col-sm-5">
+            <input type="text" name="lastName" class="form-control" placeholder="Ivanov"/>
         </div>
+    </div>
 
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Telephone: </label>
-            <div class="col-sm-5">
-            <input type="text" name="telephone" class="form-control"/>
-            </div>
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Telephone: </label>
+        <div class="col-sm-5">
+            <input type="text" name="telephone" class="form-control" placeholder="8-###-###-##-##"/>
+
         </div>
+    </div>
 
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Email: </label>
-            <div class="col-sm-5">
-            <input type="text" name="email" class="form-control"/>
-            </div>
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"  > Email: </label>
+        <div class="col-sm-5">
+            <input type="text" name="email" class="form-control" placeholder="ivanov@gmail.com" />
         </div>
+    </div>
 
-        <div class="col-auto my-1">
-            <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Passport: </label>
-            <div class="col-sm-5">
-            <input type="text" name="passport" class="form-control"/>
-            </div>
+    <div class="col-auto my-1">
+        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Passport: </label>
+        <div class="col-sm-5">
+            <input type="text" name="passport" class="form-control"placeholder="##-##-###-###"/>
         </div>
+    </div>
 
-        <button type="submit" class="btn btn-primary ml-2 mt-2 mb-2">Create</button>
+    <button type="submit" class="btn btn-primary ml-2 mt-2 mb-2">Create</button>
 </form>
+
     </div>
 
     <div><h4>List of users</h4></div>
@@ -71,7 +71,7 @@
                     <td class="align-middle text-center" >${usr.firstName} ${usr.midName} ${usr.lastName}</td>
                     <td class="align-middle text-center" >${usr.passport}</td>
                     <td class="align-middle text-center" >${usr.telephone}</td>
-                    <td class="align-middle text-center" >${usr.email}</td>
+                    <td class="align-middle text-center">${usr.email}</td>
                     <td class="align-middle text-center" ><a href="users/${usr.id}">Banks and offers</a></td>
                     <td class="align-middle text-center" >
                                 <form action="/delete" method="post">

@@ -5,7 +5,6 @@
     <br><h5>Add new bank</h5>
     <div class="form-row align-items-center mt-3">
         <form method="post">
-            <#--    <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
 
             <div class="col-auto my-1">
                 <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Name: </label>

@@ -53,6 +53,7 @@
                         <#if offer.creditName = credit.name>
                             <td class="align-middle text-center" >${credit.limit}</td>
                             <td class="align-middle text-center" >${credit.rate}</td>
+                            <#break>
                         </#if>
                     </#list>
 

@@ -31,7 +31,7 @@
                 <input type="hidden" name="creditName" class="form-control"  value="${credit.name}">
                 <input type="hidden" name="paymentAll" class="form-control"  value="${paymentAll}">
             </div>
-            <button type="submit" class="btn btn-outline-danger ml-2 mt-2" name="delete">Accept</button>
+            <button type="submit" class="btn btn-primary ml-2 mt-2 mb-2" name="delete">Accept</button>
         </form>
         <div class="col-auto my-1">
             <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> All payment: ${paymentAll}</label>
@@ -50,7 +50,7 @@
         <tbody>
         <#list paymentPercent as pP>
             <tr>
-                <td class="align-middle text-center" >#{pP?index}</td>
+                <td class="align-middle text-center" >#{pP?index+1}</td>
                 <td class="align-middle text-center" >${paymentMonth}</td>
                 <td class="align-middle text-center" >${pP}</td>
                 <td class="align-middle text-center" >${paymentBody[pP?index]}</td>

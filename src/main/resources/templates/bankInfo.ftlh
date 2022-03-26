@@ -28,11 +28,11 @@
                 </div>
                 <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Limit (month): </label>
                 <div class="col-sm-5">
-                    <input type="float" name="limit" class="form-control"/>
+                    <input type="float" name="limit" class="form-control" placeholder="More 0 less 500"/>
                 </div>
                 <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Rate: </label>
                 <div class="col-sm-5">
-                    <input type="float" name="rate" class="form-control"/>
+                    <input type="float" name="rate" class="form-control" placeholder="More 0 less 100"/>
                 </div>
             </div>
 
