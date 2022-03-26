@@ -46,7 +46,7 @@ public class PaymentController {
         return "offerInfo";
     }
 
-    @PostMapping
+    @PostMapping("/calculate")
     public String calculation(@PathVariable Bank bank, @PathVariable Credit credit,
                               @RequestParam float sum, Model model){
         double balance = sum;
@@ -93,7 +93,17 @@ public class PaymentController {
                             @RequestParam String passport,
                             Model model){
         Iterable<Offer> offers  = offerRepos.findAll();
+        UserDAO userDAO = userDAORepos.findByPassport(passport);
         Offer offer = offerRepos.findByName(creditName+bank.getName());
+
+        if(userDAO==null){
+            model.addAttribute("messageError","This user does not exist");
+            model.addAttribute("usrs", userDAORepos.findAll());
+            model.addAttribute("credit",credit);
+            model.addAttribute("bank",bank);
+            model.addAttribute("count",0);
+            return "offerInfo";
+        }
 
         offer.setName(passport+" "+creditName);
         offer.setCreditName(creditName);
@@ -104,7 +114,7 @@ public class PaymentController {
 
         offerRepos.save(offer);
 
-        UserDAO userDAO = userDAORepos.findByPassport(passport);
+
         userDAO.getOffers().add(offer);
         userDAO.getBanks().add(bank);
         userDAORepos.save(userDAO);

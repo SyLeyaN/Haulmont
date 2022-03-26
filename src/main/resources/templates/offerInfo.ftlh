@@ -5,7 +5,7 @@
 
     <h4><font color="#dc143c">${messageError!""}</font></h4>
 
-    <form method="post">
+    <form action="/banks/${bank.id}/${credit.id}/calculate" method="post">
     <div class="col-auto my-1">
         <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"> Rate: ${credit.rate}</label>
     </div>
@@ -25,10 +25,10 @@
     </form>
 
     <#if count != 0>
-        <form action="${credit.id}/saveOffer" method="post">
+        <form action="/banks/${bank.id}/${credit.id}/saveOffer" method="post">
             <div class="col-sm-5">
                 <input type="text" name="passport" class="form-control"  placeholder="Enter client's passport">
-                <input type="hidden" name="creditName" class="form-control"  value="${credit.name}">
+                <input type="hidden" name="creditName" class="form-control"  value="${credit.name!""}">
                 <input type="hidden" name="paymentAll" class="form-control"  value="${paymentAll}">
             </div>
             <button type="submit" class="btn btn-primary ml-2 mt-2 mb-2" name="delete">Accept</button>
